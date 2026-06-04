@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
       val currentRoute = nav.currentBackStackEntryAsState().value?.destination?.route
       val ctx = LocalContext.current
       val wcc = WindowInsetsControllerCompat(window, window.decorView)
-      if (currentRoute == "splash") {
+      if (currentRoute == "splash" || currentRoute == "home") {
         wcc.hide(Type.systemBars())
         wcc.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
       }
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
               Log.d("mystatus", Api.isServerAvailable().toString())
             }
-            NavHost(nav, "splash") {
+            NavHost(nav, "home") {
               composable("splash") {
                 Splash(
                   onClose = { finish() },
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                   })
               }
               composable("login") { Login(nav) }
-              composable("home") { Home(ctx, nav) }
+              composable("home") { Home() }
               composable("observacoes") {}
               composable("sobre") {}
             }
