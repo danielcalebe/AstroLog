@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
               Log.d("mystatus", Api.isServerAvailable().toString())
             }
-            NavHost(nav, "objetos") {
+            NavHost(nav, "sobre") {
               composable("splash") {
                 Splash(
                   onClose = { finish() },
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
               composable("login") { Login(nav) }
               composable("home") { Home() }
               composable("objetos") { Objetos() }
-              composable("sobre") {}
+              composable("sobre") { Sobre() }
             }
           }
         }
