@@ -1,16 +1,23 @@
 package com.danielcalebe.astrolog
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowInsetsCompat.Type
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.danielcalebe.astrolog.ui.theme.AstroLogTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +25,32 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
     setContent {
+      val nav = rememberNavController()
+      val currentRoute = nav.currentBackStackEntryAsState().value?.destination?.route
+      val ctx = LocalContext.current
+      val wcc = WindowInsetsControllerCompat(window, window.decorView)
+      if (currentRoute == "splash") {
+        wcc.hide(Type.systemBars())
+        wcc.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+      }
       AstroLogTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-          Greeting(
-            name = "Android",
+          Column(
             modifier = Modifier.padding(innerPadding)
-          )
+          ) {
+            LaunchedEffect(Unit) {
+              Log.d("mystatus", Api.isServerAvailable().toString())
+            }
+            NavHost(nav, "splash") {
+              composable("splash") { Splash(onClose = {finish()}, navigate = {nav.navigate("login")}) }
+              composable("login") {}
+              composable("home") {}
+              composable("observacoes") {}
+              composable("sobre") {}
+            }
+          }
         }
       }
     }
-  }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-  Text(
-    text = "Hello $name!",
-    modifier = modifier
-  )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-  AstroLogTheme {
-    Greeting("Android")
   }
 }
