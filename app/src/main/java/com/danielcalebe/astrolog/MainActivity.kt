@@ -42,9 +42,26 @@ class MainActivity : ComponentActivity() {
               Log.d("mystatus", Api.isServerAvailable().toString())
             }
             NavHost(nav, "splash") {
-              composable("splash") { Splash(onClose = {finish()}, navigate = {nav.navigate("login")}) }
-              composable("login") {}
-              composable("home") {}
+              composable("splash") {
+                Splash(
+                  onClose = { finish() },
+                  navigate = {
+                    if (Session.token(ctx) == null)
+                      nav.navigate("login") {
+                        popUpTo("splash") {
+                          inclusive = true
+                        }
+                      }
+                    else
+                      nav.navigate("home") {
+                        popUpTo("splash") {
+                          inclusive = true
+                        }
+                      }
+                  })
+              }
+              composable("login") { Login(nav) }
+              composable("home") { Home(ctx, nav) }
               composable("observacoes") {}
               composable("sobre") {}
             }
