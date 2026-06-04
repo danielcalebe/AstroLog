@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
+  id("org.jetbrains.kotlin.plugin.serialization") version "2.3.21"
 }
 
 android {
@@ -37,6 +38,15 @@ android {
 }
 
 dependencies {
+
+  //noinspection UseTomlInstead
+  implementation("org.jetbrains.kotlixn:kotlinx-serialization-json.1.11.0")
+  implementation("androidx.compose.material:material-icons-extended-android:1.7.8")
+  implementation("io.ktor:ktor-client-core:3.5.0")
+  implementation("io.ktor:ktor-client-android:3.5.0")
+  implementation("io.ktor:ktor-client-auth:3.5.0")
+  implementation("io.ktor:ktor-client-content-negotiation:3.5.0")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:3.5.0")
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.activity.compose)
