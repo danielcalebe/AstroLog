@@ -58,6 +58,8 @@ object Api {
     val totalObjects: Int
   )
 
+
+
   suspend fun isServerAvailable() = try {
     val r = client.get("$BASE/status")
     if (r.status.value == 200) true

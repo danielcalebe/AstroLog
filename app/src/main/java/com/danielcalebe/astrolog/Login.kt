@@ -36,10 +36,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.danielcalebe.astrolog.ui.theme.AstroLogTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -146,6 +144,7 @@ fun Login(nav: NavController) {
             val r = Api.login(username, pass)
             if (r.data != null) {
               Session.save(ctx, r.data.token)
+              Session.saveData(ctx, r.data)
               nav.navigate("home") {
                 popUpTo("login"){
                   inclusive = true
@@ -156,7 +155,8 @@ fun Login(nav: NavController) {
           }
         },
         enabled = username.isNotEmpty() && pass.isNotEmpty(),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().height(60  .dp),
+        shape = RoundedCornerShape(12.dp)
       ) {
         if (loading) CircularProgressIndicator(
           trackColor = MaterialTheme.colorScheme.background,
